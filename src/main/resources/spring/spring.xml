@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--    1、起名字-->
+    <dubbo:application name="dubbo-consumer"/>
+    <!--    2、配置Dubbo注册中心对应的Zookeeper地址-->
+    <dubbo:registry address="zookeeper://172.16.126.150:2181"/>
+    <!--    3、配置扫描路径-->
+    <dubbo:annotation package="com.haishao.controller"/>
+
+    <!--    发布时，关闭启动时检查异常，默认开启-->
+    <!--    <dubbo:consumer check="false"/>-->
+    <!--    表示给服务端提供的服务做单独的配置。
+                interface:表示给服务端的哪一个服务模块做配置-->
+    <!--    等价于@Reference注解-->
+    <!--    如果version的取值是一个"*"表示随机调用服务端的实现类-->
+    <!--    loadbalance属性:表示配置负载均衡的策略-->
+    <dubbo:reference loadbalance="roundrobin" version="2.0.0" interface="com.haishao.service.HelloService"
+                     id="helloService"
+                     stub="com.haishao.service.impl.HelloServiceStub">
+        <!--        <dubbo:method name="sayHello" retries="3"/>-->
+        <!--        <dubbo:method name="sayBye" retries="1"/>-->
+    </dubbo:reference>
+
+</beans>
